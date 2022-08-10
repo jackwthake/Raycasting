@@ -91,7 +91,7 @@ void Player::tick(int **map, float delta) {
  * @param window the active window to draw to
  * @param map the current map
  */
-void Player::render(sf::RenderWindow &window, int **map) {
+void Player::render(int **map, sf::RenderWindow &window) {
     /* loop through each x value of the screen */
     for (int x = 0; x < DISPL_WIDTH; ++x) {
         double camera_x = 2 * x / (double)DISPL_WIDTH - 1; /* project the x value onto the camera plane */
