@@ -5,14 +5,19 @@ const FQBN = "adafruit:samd:adafruit_pygamer_m4";
 var PORT = "";
 
 // execute a command and get output
-function execute(command, callback){
+const execute = (command, callback) => {
     exec(command, function(error, stdout, stderr) { callback(stdout, stderr); });
 };
 
-function abort(msg) {
+// abort program
+const abort = (msg) => {
     console.log(msg);
     process.exitCode = -1;
     process.exit();
+};
+
+const log = (msg) => {
+    console.log("\x1b[32m" + msg + "\x1b[0m");
 }
 
 
@@ -33,21 +38,21 @@ if (require.main === module) {
         if (PORT.length === 0)
             abort("Failed to locate device.");
 
-        console.log("\x1b[32m [✔] Port Found\x1b[0m");
+        log("\t[✔] Port Found");
 
         // compile
         execute("arduino-cli compile --fqbn " + FQBN + " .", (output, stderr) => {
             if (stderr.length !== 0)
                 abort(stderr);
 
-            console.log("\x1b[32m [✔] Compiled\x1b[0m");
+            log("\t[✔] Compilation Successful");
 
             // upload
             execute("arduino-cli upload --fqbn " + FQBN + " --port " + PORT, (output, stderr) => {
                 if (stderr.length !== 0)
                     abort(stderr);
 
-                console.log("\x1b[32m [✔] Uploaded\x1b[0m");
+                log("\t[✔] Upload Successful");
             });
         });
     });
